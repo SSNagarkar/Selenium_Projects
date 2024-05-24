@@ -12,7 +12,6 @@ class Products:
     product_info = (By.XPATH, "//ol[@class='products list items product-items']/li[5]/div")
     product_size = (By.XPATH, "//div[@id='product-options-wrapper']/div/div/div[1]/div/div[2]")
     product_colour = (By.XPATH, "//div[@id='product-options-wrapper']/div/div/div[2]/div/div[2]")
-    #product_add = (By.XPATH, '//button[text(), "Add to Cart"]')
     product_qty = (By.ID, "qty")
     add_button = (By.CSS_SELECTOR, "#product-addtocart-button")
     cart_button = (By.CSS_SELECTOR, "span[class='counter-number']")
@@ -25,8 +24,10 @@ class Products:
     share_to_msg = (By.ID, "message")
     share_button = (By.XPATH, "//div[@class='primary']/button/span[text() ='Share Wish List']")
     share_success_msg = (By.XPATH, "//div[@class='messages']/div/div")
-
-
+    compare = (By.XPATH, "//div[@class='product-social-links']/div/a[2]/span")
+    compare_msg = (By.XPATH, "//div[@class='messages']/div/div")
+    comparison_list = (By.XPATH, "//div[@class='messages']/div/div/a")
+    compare_product_name = (By.LINK_TEXT, "Juliana Short-Sleeve Tee")
 
     def getProductDetails(self):
         return self.driver.find_elements(*Products.products)
@@ -78,6 +79,18 @@ class Products:
 
     def shareSuccessMsg(self):
         return self.driver.find_element(*Products.share_success_msg)
+
+    def addToCompare(self):
+        return self.driver.find_element(*Products.compare)
+
+    def getCompareMsg(self):
+        return self.driver.find_element(*Products.compare_msg)
+
+    def goToComparisonList(self):
+        return self.driver.find_element(*Products.comparison_list)
+
+    def getComparedProductItemName(self):
+        return self.driver.find_element(*Products.compare_product_name)
 
 
 

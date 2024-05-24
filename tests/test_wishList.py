@@ -9,51 +9,14 @@ from pom.test_Signin import SignIn
 from utilities.base_file import BaseClass
 
 
-# @pytest.mark.skip
+@pytest.mark.usefixtures("signIn")
 class TestWishList(BaseClass):
     def test_wishListFeature(self, loadTestData):
-        # SignIn Page Tests
-        SigninPage = SignIn(self.driver)
-
-        SigninPage.signInAccount().click()
-        SigninPage.enterEmail().send_keys(loadTestData["email"])
-        SigninPage.enterPassword().send_keys(loadTestData["password"])
-        SigninPage.clickLogin().click()
-        # logs.info("LoggedIn successfully")
-        # logs.info("Email Id entered : " + loadTestData["email"])
-        # logs.info("Password  entered : " + loadTestData["password"])
-        SigninPage.clickYogaButton().click()
-
-        # Display Item Page Tests
         ProductPage = Products(self.driver)
-
-        products = ProductPage.getProductDetails()
-
-        for product in products:
-            product_name = ProductPage.getProductName(product).text
-            if product_name == loadTestData["product_name"]:
-                # logs.info("Product selected : " + loadTestData["product_name"])
-                ProductPage.getProductName(product).click()
-                ProductPage.getProductSize().click()
-                ProductPage.getProductColor().click()
-                ProductPage.addToCart().click()
-                # logs.critical("Product added to cart")
-                break
-        wait = WebDriverWait(self.driver, 10)
-        wait.until(expected_conditions.visibility_of_element_located((By.CSS_SELECTOR, "ol[class = 'products list "
-                                                                                       "items product-items'] li")))
-        self.driver.execute_script("window.scrollTo(0, 0)")
-        wait.until(expected_conditions.visibility_of_element_located((By.XPATH, "//div[@class = 'messages']/div/div")))
-        ProductPage.getCartDetails().click()
-        message = ProductPage.getMessage()
-        message_text = message.text
-
-        assert "Fiona Fitness Short" in message_text
-
         ProductPage.addToWishList().click()
         wishlist_msg = ProductPage.getWishListMsg().text
 
-        assert "Fiona Fitness Short has been added to your Wish List" in wishlist_msg
+        assert "Juliana Short-Sleeve Tee has been added to your Wish List" in wishlist_msg
 
         ProductPage.shareWishList().click()
         ProductPage.shareToEmail().send_keys("samy@gmail.com")
@@ -63,6 +26,6 @@ class TestWishList(BaseClass):
 
         assert "our wish list has been shared" in share_success_msg
 
-    @pytest.fixture(params=DataLoader.test_data)
+    @pytest.fixture(scope="class",params=DataLoader.test_data)
     def loadTestData(self, request):
         return request.param
